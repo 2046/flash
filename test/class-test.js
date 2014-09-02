@@ -31,10 +31,13 @@ define(function(require, exports, module){
             var Dog = new Class(null);
             var dog = new Dog();
 
-            Dog = new Class();
-            dog = new Dog();
-
             equals(dog.constructor, Dog);
+            equals(Dog.superclass.constructor, Class);
+
+            Dog = new Class();
+            new Dog();
+
+            equals(Dog.superclass.constructor, Class);
         });
 
         it('Extends', function(){

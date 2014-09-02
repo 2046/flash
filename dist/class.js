@@ -1,44 +1,47 @@
 define(function(require, exports, module){
     'use strict'
     
+    // Thanks to:
+    //     - https://github.com/aralejs/class/blob/master/class.js
+    //     - http://ejohn.org/blog/simple-javascript-inheritance/
+    //     - http://documentcloud.github.com/backbone/#Model-extend
+    
     function F(){};
     
-    var createProto = (function(){
-        if(Object.__proto__){
-            return function(proto){
-                return {
-                    __proto__ : proto
-                };
-            };
-        }else{
-            return function(proto){
-                F.prototype = proto;
-                return new F();
-            };
-        }
-    })();
+    var createProto = Object.__proto__ ?
+        function(proto){
+            return {__proto__ : proto};
+        } :
+        function(proto){
+            F.prototype = proto;
+            return new F();
+        };
     
     function Class(properties){
+        properties || (properties = {});
+        properties.Extends || (properties.Extends = Class);
+    
         return classify(implement.call(function(){
             if(this.initialize){
                 this.initialize.apply(this, arguments);
             }
-        }, properties || {}));
+        }, properties));
     };
     
-    Class.Mutators = {
-        Extends : function(parent, proto){
-            proto = createProto(parent.prototype);
+    Class.Method = {
+        Extends : function(parent){
+            var proto = createProto(parent.prototype);
+    
             mix(proto, this.prototype);
             proto.constructor = this;
             this.prototype = proto;
             this.superclass = parent.prototype;
         },
-        Implements : function(items, item, proto){
-            proto = this.prototype;
+        Implements : function(items){
+            var item;
     
             while(item = items.shift()){
-                mix(proto, item.prototype || item);
+                mix(this.prototype, item.prototype || item);
             }
         }
     };
@@ -49,24 +52,14 @@ define(function(require, exports, module){
         for(key in properties){
             value = properties[key];
     
-            if(Class.Mutators.hasOwnProperty(key)){
-                Class.Mutators[key].call(this, value);
+            if(key in Class.Method){
+                Class.Method[key].call(this, value);
             }else{
                 this.prototype[key] = value;
             }
         }
     
         return this;
-    };
-    
-    function mix(receiver, supplier){
-        var key;
-    
-        for(key in supplier){
-            if(supplier.hasOwnProperty(key) && key !== 'prototype'){
-                receiver[key] = supplier[key];
-            }
-        }
     };
     
     function extend(properties){
@@ -79,6 +72,16 @@ define(function(require, exports, module){
         cls.extend = extend;
         cls.implement = implement;
         return cls;
+    };
+    
+    function mix(receiver, supplier){
+        var key;
+    
+        for(key in supplier){
+            if(supplier.hasOwnProperty(key) && key !== 'prototype'){
+                receiver[key] = supplier[key];
+            }
+        }
     };
     
     module.exports = Class;
