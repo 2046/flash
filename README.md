@@ -22,7 +22,7 @@ var myClass = new MyClass();
 myClass.say(); //hello world, my name is han
 ```
 
-###``properties``集合中特殊属性
+###``properties`` 集合中特殊属性
 
 ####``initialize``属性，标明初始化方法，会在类实例化时调用
 
@@ -73,7 +73,7 @@ animal.say(); //hello: han
 animal.hungry(); //I'm hungry
 ```
 
-####``Extends``属性，标明新创建的类需要继承的父类，不支持多继承
+####``Extends`` 属性，标明新创建的类需要继承的父类，不支持多继承
 
 ```
 var Class = require('class');
