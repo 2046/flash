@@ -2,6 +2,30 @@
 
 提供简洁的 OO 实现。
 
+## 使用
+
+下载项目中 dist 目录里面的文件，并配置好模块相关信息（如：路径，别名），使用如下示例代码即可开始使用。
+
+```
+saejs.use(['class'], function(Class){
+    var MyClass = new Class({
+        name : 'han',
+        say : function(){}
+    });
+    
+    var myClass = new MyClass();
+});
+
+require(['class'], function(){Class}{
+    var MyClass = new Class({
+        name : 'han',
+        say : function(){}
+    });
+    
+    var myClass = new MyClass();
+});
+```
+
 ## 使用说明
 
 ###``new Class([properties]);``
