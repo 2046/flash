@@ -32,7 +32,7 @@ require(['flash'], function(Flash){
 
 实例化出一个 flash 对象，``properties``是该对象的属性集合
 
-该对象有以下属性，并是可选的：
+该对象有以下属性，并且是可选的：
 
 - id **{String}** 唯一标识符
 - vars **{Object}** flashvars 属性集合
