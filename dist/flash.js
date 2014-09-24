@@ -1,52 +1,58 @@
 define(function(require, exports, module){
     'use strict'
     
-    var index, win, Base, isIE, FLASH_MIME_TYPE, CLASSID, FLash;
+    // Thanks:
+    //     - https://github.com/swfobject
+    //     - http://mootools.net/docs/core/Utilities/Swiff
+    
+    var index, Base, tpl, isIE, FLASH_MIME_TYPE, CLASSID, Flash, cachedInstances;
     
     Base = require('base');
+    tpl = require('./flash.tpl');
     
     index = 0;
-    win = window;
-    win.flashAPI = {};
+    cachedInstances = {};
+    window.flashAPI = window.flashAPI || {};
     FLASH_MIME_TYPE = 'application/x-shockwave-flash';
     CLASSID = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
     isIE = navigator.userAgent.toLowerCase().indexOf('msie') !== -1;
     
-    FLash = Base.extend({
+    Flash = Base.extend({
         attrs : {
-            id : null,
+            id : '',
             vars : {},
             path : '',
             width : 1,
             height : 1,
             callBacks : {},
+            properties : {},
             container : null,
-            properties : null,
             params : {
                 loop : true,
                 menu : false,
                 quality : 'high',
-                wMode : 'window',
+                wmode : 'window',
                 allowFullScreen : true,
                 allowScriptAccess : 'always'
             }
         },
         setup : function(){
-            var params, properties;
+            var params, properties, id, path;
     
-            if(!this.get('id')){
-                this.set('id', uuid());
+            path = this.get('path');
+    
+            if(!(id = this.get('id'))){
+                this.set('id', id = uuid());
             }
     
-            params = this.get('params');
             properties = $.extend(this.get('properties'), {
-                id : this.get('id'),
-                data : this.get('path'),
+                id : id,
+                data : path,
                 width : this.get('width'),
                 height : this.get('height')
             });
     
-            generateFlashCallJsHook(this, params);
+            generateFlashCallJsHook(this, params = this.get('params'));
     
             if(isIE){
                 params.movie = path;
@@ -56,18 +62,28 @@ define(function(require, exports, module){
             }
     
             this.swf = $(generateHTML(properties, params));
-            this.inject(this.get('container'));
+            this.appendTo(this.get('container'));
+            cachedInstances[id] = this;
         },
-        inject : function(element){
+        appendTo : function(element){
             element = $(element);
     
             if(element.length){
                 this.swf.appendTo(element);
             }
         },
-        remove : function(){
-            this.swf.parent().html('');
-            this.destroy();
+        destroy : function(){
+            this.swf.remove();
+            delete cachedInstances[this.get('id')];
+            Flash.superclass.destroy.call(this);
+        }
+    });
+    
+    $(window).unload(function(){
+        for(var key in cachedInstances){
+            if(cachedInstances.hasOwnProperty(key)){
+                cachedInstances[key].destroy();
+            }
         }
     });
     
@@ -95,12 +111,10 @@ define(function(require, exports, module){
     };
     
     function generateHTML(properties, params){
-        var tpl, paramsTpl, propertiesTpl, tipsTpl, property, param;
+        var paramsTpl, propertiesTpl, property, param;
     
         paramsTpl = '';
         propertiesTpl = '';
-        tpl = '<object {properties}>{params}{tips}</object>';
-        tipsTpl = '<div style="width:' + properties.width + 'px;height:' + properties.height + 'px;line-height:' + properties.height + 'px"><span style="font-size:18px">You also do not have flash player installed,please click <a href="http://www.adobe.com/go/getflash" target="_blank">here</a> to install</span></div>';
     
         for(property in properties){
             if(properties.hasOwnProperty(property)){
@@ -108,16 +122,16 @@ define(function(require, exports, module){
             }
         }
     
-        tpl = tpl.replace(/{properties}/, propertiesTpl);
-    
         for(param in params){
-            if(params.hasOwnProperty(param)){
+            if(params.hasOwnProperty(param) && params[param]){
                 paramsTpl += '<param name="' + param + '" value="' + params[param] + '" />';
             }
         }
     
-        tpl = tpl.replace(/{tips}/, tipsTpl);
-        return tpl.replace(/{params}/, paramsTpl);
+        return tpl.replace(/{params}/, paramsTpl)
+                        .replace(/{properties}/, propertiesTpl)
+                        .replace(/{width}/g, properties.width)
+                        .replace(/{height}/g, properties.height);
     };
     
     function uuid(){
