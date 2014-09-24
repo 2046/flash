@@ -25,3 +25,20 @@ require(['flash'], function(Flash){
   });
 });
 ```
+
+##使用说明
+
+###``new Flash(properties)``
+
+实例化出一个 flash 对象
+
+```
+$('<div id="test"></test>').appendTo(document.body);
+
+new Flash({
+  path : '', // swf 文件地址
+  width : 100,
+  height : 100,
+  container : '#test'
+});
+```
