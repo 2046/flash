@@ -30,7 +30,25 @@ require(['flash'], function(Flash){
 
 ###``new Flash(properties)``
 
-实例化出一个 flash 对象
+实例化出一个 flash 对象，``properties``是该对象的属性集合
+
+该对象有以下属性：
+
+- id **{String}**
+- vars **{Object}**
+- path **{String}**
+- width **{Number}**
+- height **{Number}**
+- callBacks **{Object}**
+- properties **{Object}**
+- container **{String|jQuery Object}**
+- params **{Object}**
+  - loop **{Boolean}**
+  - menu **{Boolean}**
+  - quality **{String}**
+  - wmode **{String}**
+  - allowFullScreen **{Boolean}**
+  - allowScriptAccess **{String}**
 
 ```
 $('<div id="test"></test>').appendTo(document.body);
