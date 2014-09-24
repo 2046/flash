@@ -94,3 +94,7 @@ var flash = new Flash({
 
 flash.destroy();
 ```
+
+###一个完整的例子
+
+参考测试用例中的![flash call js](https://github.com/2046/flash/blob/master/tests/flash-test.js#L86-L113)用例
