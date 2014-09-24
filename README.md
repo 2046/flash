@@ -34,7 +34,7 @@ require(['flash'], function(Flash){
 
 该对象有以下属性：
 
-- id **{String}**
+- id **{String}** flash 的 id，如不填写，默认使用一个随机值
 - vars **{Object}**
 - path **{String}**
 - width **{Number}**
