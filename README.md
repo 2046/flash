@@ -34,14 +34,14 @@ require(['flash'], function(Flash){
 
 该对象有以下属性：
 
-- id **{String}** flash 的 id，如不填写，默认使用一个随机值
-- vars **{Object}**
-- path **{String}**
-- width **{Number}**
-- height **{Number}**
-- callBacks **{Object}**
-- properties **{Object}**
-- container **{String|jQuery Object}**
+- id **{String}** 唯一标识符，可选，默认是随机值
+- vars **{Object}** flashvars 的值，可选，默认是{}
+- path **{String}** swf 文件地址，可选，默认是''
+- width **{Number}** 宽度，可选，默认是1
+- height **{Number}** 高度，可选，默认是1
+- callBacks **{Object}** flash 调用 js 的回调，可选，默认是{}
+- properties **{Object}** 属性集合，可选，默认包含``id``，``data``，``width``，``height``属性
+- container **{String|jQuery Object}** 包裹 flash 的 DOM 对象，可选，默认是null
 - params **{Object}**
   - loop **{Boolean}**
   - menu **{Boolean}**
