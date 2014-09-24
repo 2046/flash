@@ -62,3 +62,9 @@ new Flash({
   container : '#test'
 });
 ```
+
+如果在实例化时不传``container``参数，那么在实例化时就不会把 flash 对象插入 DOM 中。在实例化后，可以使用``appendTo``方法把 flash 对象插入 DOM 中。
+
+###appendTo ``obj.appendTo(element)``
+
+###destroy ``obj.destroy()``
