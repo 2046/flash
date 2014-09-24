@@ -79,3 +79,18 @@ flash.appendTo($('#test'));
 ```
 
 ###destroy ``obj.destroy()``
+
+销毁 flash 对象，并调用父类的``destroy``方法
+
+```
+$('<div id="test"></test>').appendTo(document.body);
+
+var flash = new Flash({
+  path : '', // swf 文件地址
+  width : 100,
+  height : 100,
+  container : '#test'
+});
+
+flash.destroy();
+```
