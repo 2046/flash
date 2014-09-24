@@ -9,19 +9,19 @@
 ```
 seajs.use(['flash'], function(Flash){
   new Flash({
-    path : 'swf 文件地址',
+    path : '', // swf 文件地址
     width : 100,
     height : 100,
-    container : '包裹 flash 的 DOM 对象'
+    container : null // 包裹 flash 的 DOM 对象
   });
 });
 
 require(['flash'], function(Flash){
   new Flash({
-    path : 'swf 文件地址',
+    path : '', // swf 文件地址
     width : 100,
     height : 100,
-    container : '包裹 flash 的 DOM 对象'
+    container : null // 包裹 flash 的 DOM 对象
   });
 });
 ```
