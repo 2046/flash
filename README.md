@@ -1,4 +1,4 @@
-#class
+#Class
 
 提供简洁的 OO 实现。
 
