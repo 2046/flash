@@ -36,7 +36,7 @@ define(function(require, exports, module){
                 allowScriptAccess : 'always'
             }
         },
-        setup : function(){
+        init : function(){
             var params, properties, id, path;
     
             path = this.get('path');

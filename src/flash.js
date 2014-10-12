@@ -35,7 +35,7 @@ Flash = Base.extend({
             allowScriptAccess : 'always'
         }
     },
-    setup : function(){
+    init : function(){
         var params, properties, id, path;
 
         path = this.get('path');
