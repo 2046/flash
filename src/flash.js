@@ -98,7 +98,7 @@ function generateFlashCallJsHook(ctx, params){
         if(callBacks.hasOwnProperty(callBack)){
             flashAPI[id][callBack] = (function(fn){
                 return function(){
-                    fn.call(ctx.swf, arguments);
+                    fn.apply(ctx.swf, arguments);
                 };
             })(callBacks[callBack]);
 
